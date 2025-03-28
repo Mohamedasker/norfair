@@ -276,9 +276,9 @@ class TrackedObject:
 
     @property
     def estimate(self):
-        positions = self.filter.x.T.flatten()[: self.dim_z].reshape(-1, 2)
-        velocities = self.filter.x.T.flatten()[self.dim_z :].reshape(-1, 2)
-        return positions
+        x_flat = self.filter.x.ravel()
+        return np.asarray(x_flat[: self.dim_z].reshape(-1, 2), dtype=np.float32)
+
 
     @property
     def live_points(self):
@@ -364,7 +364,7 @@ class TrackedObject:
 
 class Detection:
     def __init__(self, points: np.array, scores=None, data=None, label=None):
-        self.points = points
+        self.points = np.asarray(points, dtype=np.float32)
         self.scores = scores
         self.data = data
         self.label = label
